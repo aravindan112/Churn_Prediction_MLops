@@ -1,20 +1,17 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
-import mlflow.sklearn
 import numpy as np
 import pickle
 
-mlflow.set_tracking_uri("sqlite:///notebooks/mlflow.db")
 app = FastAPI(title="Churn Prediction API")
 
+# Load preprocessor and model
 with open('models/preprocessor.pkl', 'rb') as f:
     preprocessor = pickle.load(f)
 
-model = mlflow.sklearn.load_model(
-    "runs:/81c8861013a843478fdf5d09620d3824/LogisticRegression"
-)
+with open('models/best_model.pkl', 'rb') as f:
+    model = pickle.load(f)
 
-# Define input schema
 class CustomerData(BaseModel):
     gender: str
     SeniorCitizen: int
@@ -43,12 +40,10 @@ def root():
 @app.post("/predict")
 def predict(data: CustomerData):
     import pandas as pd
-    
     input_df = pd.DataFrame([data.dict()])
     processed = preprocessor.transform(input_df)
     prediction = model.predict(processed)[0]
     probability = model.predict_proba(processed)[0][1]
-    
     return {
         "churn_prediction": int(prediction),
         "churn_probability": round(float(probability), 4),
