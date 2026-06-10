@@ -44,24 +44,17 @@ GitHub Actions CI/CD
 
 ## Project Structure
 
+```
 Churn_ML_Pipeline-/
-├── data/
-│   └── processed/          # Cleaned and split datasets
-├── models/
-│   ├── preprocessor.pkl    # Sklearn ColumnTransformer pipeline
-│   └── best_model.pkl      # Trained Logistic Regression model
-├── notebooks/
-│   ├── 01_eda.ipynb        # Exploratory Data Analysis
-│   ├── 02_preprocessing.ipynb
-│   ├── 03_training.ipynb   # MLflow experiment tracking
-│   └── 04_drift_monitor.ipynb
-├── src/
-│   └── predict.py          # FastAPI prediction endpoint
-├── reports/
-│   └── drift_report.html   # Evidently AI drift report
+├── data/processed/         # Cleaned and split datasets
+├── models/                 # Saved preprocessor and model
+├── notebooks/              # EDA, preprocessing, training, drift
+├── src/predict.py          # FastAPI prediction endpoint
+├── reports/                # Evidently AI drift report
 ├── Dockerfile
 ├── requirements.txt
-└── .github/workflows/test.yml
+└── .github/workflows/      # CI/CD pipeline
+```
 
 ## How to Run
 
